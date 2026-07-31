@@ -6,14 +6,8 @@ En su primera versión, el sistema permitirá registrar, consultar y administrar
 Como parte de la ruta avanzada, el proyecto se desarrollará utilizando Docker para estandarizar el entorno de ejecución y almacenamiento local de datos durante las primeras iteraciones, permitiendo una futura migración a bases de datos relacionales como PostgreSQL sin modificar la lógica de negocio.
 
 # Objetivos técnicos
-C# 14
-.NET 10 (si está disponible en tu entorno)
-Arquitectura en capas
-Principios SOLID
-Docker
-Persistencia local inicialmente
-Preparado para PostgreSQL
-Código limpio
-Validaciones
-Manejo de excepciones
-Separación de responsabilidades
+- C# 14
+- .NET 10 
+ -Arquitectura en capas
+- Docker
+- Persistencia local inicialmente
