@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="VetCareRm.Consola/VetCareRm.Consola.csproj" />
+  <Project Path="VetCareRm.Tests\VetCareRm.Tests.csproj" />
+</Solution>
