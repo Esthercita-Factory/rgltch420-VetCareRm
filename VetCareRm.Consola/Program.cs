@@ -1,68 +1,156 @@
 using VetCareRm.Consola.Models;
+
 List<Pet> pacientes = new List<Pet>();
-Console.WriteLine("======================================");
-Console.WriteLine(" Clínica Veterinaria VetCare RM");
-Console.WriteLine("======================================");
 
-Console.WriteLine();
-Console.WriteLine("REGISTRO DEL PROPIETARIO");
+bool continuar = true;
 
-Usuario propietario = new Usuario
+while (continuar)
 {
-    Id = Guid.NewGuid(),
-    Nombre = SolicitarTexto("Nombre del propietario: "),
-    Telefono = SolicitarTexto("Teléfono del propietario: "),
-    Correo = SolicitarTexto("Correo del propietario: ")
-};
+    Console.Clear();
 
-Console.WriteLine();
-Console.WriteLine("REGISTRO DEL PACIENTE");
-
-Pet paciente = new Pet
-{
-    Id = Guid.NewGuid(),
-    Nombre = SolicitarTexto("Nombre de la mascota: "),
-    Edad = SolicitarEdad("Edad de la mascota: "),
-    Especie = SolicitarTexto("Especie: "),
-    Raza = SolicitarTexto("Raza: "),
-    Sintoma = SolicitarTexto("Síntoma: "),
-    Propietario = propietario
-};
-pacientes.Add(paciente);
-Console.WriteLine();
-Console.WriteLine(
-    $"Pacientes registrados: {pacientes.Count}"
-);
-Console.WriteLine();
-Console.WriteLine("======================================");
-Console.WriteLine(" RESUMEN DEL REGISTRO");
-Console.WriteLine("======================================");
-
-foreach (Pet pacienteRegistrado in pacientes)
-{
+    Console.WriteLine("======================================");
+    Console.WriteLine(" Clínica Veterinaria VetCare RM");
+    Console.WriteLine("======================================");
     Console.WriteLine();
-    Console.WriteLine("PACIENTE");
-    Console.WriteLine($"ID: {pacienteRegistrado.Id}");
-    Console.WriteLine($"Nombre: {pacienteRegistrado.Nombre}");
-    Console.WriteLine($"Edad: {pacienteRegistrado.Edad}");
-    Console.WriteLine($"Especie: {pacienteRegistrado.Especie}");
-    Console.WriteLine($"Raza: {pacienteRegistrado.Raza}");
-    Console.WriteLine($"Síntoma: {pacienteRegistrado.Sintoma}");
+    Console.WriteLine("1. Registrar paciente");
+    Console.WriteLine("2. Listar pacientes");
+    Console.WriteLine("3. Salir");
+    Console.WriteLine();
+
+    int opcion = SolicitarOpcion("Seleccione una opción: ");
+
+    switch (opcion)
+    {
+        case 1:
+            RegistrarPaciente(pacientes);
+            break;
+
+        case 2:
+            ListarPacientes(pacientes);
+            break;
+
+        case 3:
+            continuar = false;
+            Console.WriteLine();
+            Console.WriteLine("Gracias por utilizar VetCare RM.");
+            break;
+
+        default:
+            Console.WriteLine();
+            Console.WriteLine("Error: la opción seleccionada no existe.");
+            PausarPrograma();
+            break;
+    }
+}
+
+static void RegistrarPaciente(List<Pet> pacientes)
+{
+    Console.Clear();
+
+    Console.WriteLine("======================================");
+    Console.WriteLine(" REGISTRO DEL PROPIETARIO");
+    Console.WriteLine("======================================");
+
+    Usuario propietario = new Usuario
+    {
+        Id = Guid.NewGuid(),
+        Nombre = SolicitarTexto("Nombre del propietario: "),
+        Telefono = SolicitarTexto("Teléfono del propietario: "),
+        Correo = SolicitarTexto("Correo del propietario: ")
+    };
 
     Console.WriteLine();
-    Console.WriteLine("PROPIETARIO");
-    Console.WriteLine(
-        $"ID: {pacienteRegistrado.Propietario.Id}"
-    );
-    Console.WriteLine(
-        $"Nombre: {pacienteRegistrado.Propietario.Nombre}"
-    );
-    Console.WriteLine(
-        $"Teléfono: {pacienteRegistrado.Propietario.Telefono}"
-    );
-    Console.WriteLine(
-        $"Correo: {pacienteRegistrado.Propietario.Correo}"
-    );
+    Console.WriteLine("======================================");
+    Console.WriteLine(" REGISTRO DEL PACIENTE");
+    Console.WriteLine("======================================");
+
+    Pet paciente = new Pet
+    {
+        Id = Guid.NewGuid(),
+        Nombre = SolicitarTexto("Nombre de la mascota: "),
+        Edad = SolicitarEdad("Edad de la mascota: "),
+        Especie = SolicitarTexto("Especie: "),
+        Raza = SolicitarTexto("Raza: "),
+        Sintoma = SolicitarTexto("Síntoma: "),
+        Propietario = propietario
+    };
+
+    pacientes.Add(paciente);
+
+    Console.WriteLine();
+    Console.WriteLine("Paciente registrado correctamente.");
+    Console.WriteLine($"ID asignado: {paciente.Id}");
+    Console.WriteLine($"Total de pacientes: {pacientes.Count}");
+
+    PausarPrograma();
+}
+
+static void ListarPacientes(List<Pet> pacientes)
+{
+    Console.Clear();
+
+    Console.WriteLine("======================================");
+    Console.WriteLine(" LISTADO DE PACIENTES");
+    Console.WriteLine("======================================");
+
+    if (pacientes.Count == 0)
+    {
+        Console.WriteLine();
+        Console.WriteLine("No hay pacientes registrados.");
+        PausarPrograma();
+        return;
+    }
+
+    foreach (Pet paciente in pacientes)
+    {
+        Console.WriteLine();
+        Console.WriteLine("--------------------------------------");
+        Console.WriteLine("PACIENTE");
+        Console.WriteLine($"ID: {paciente.Id}");
+        Console.WriteLine($"Nombre: {paciente.Nombre}");
+        Console.WriteLine($"Edad: {paciente.Edad}");
+        Console.WriteLine($"Especie: {paciente.Especie}");
+        Console.WriteLine($"Raza: {paciente.Raza}");
+        Console.WriteLine($"Síntoma: {paciente.Sintoma}");
+
+        Console.WriteLine();
+        Console.WriteLine("PROPIETARIO");
+        Console.WriteLine($"ID: {paciente.Propietario.Id}");
+        Console.WriteLine($"Nombre: {paciente.Propietario.Nombre}");
+        Console.WriteLine($"Teléfono: {paciente.Propietario.Telefono}");
+        Console.WriteLine($"Correo: {paciente.Propietario.Correo}");
+    }
+
+    Console.WriteLine();
+    Console.WriteLine($"Total de pacientes: {pacientes.Count}");
+
+    PausarPrograma();
+}
+
+static int SolicitarOpcion(string mensaje)
+{
+    while (true)
+    {
+        Console.Write(mensaje);
+        string? entrada = Console.ReadLine();
+
+        try
+        {
+            return int.Parse(entrada ?? string.Empty);
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine(
+                "Error: debe ingresar el número de una opción."
+            );
+        }
+        catch (OverflowException)
+        {
+            Console.WriteLine(
+                "Error: el número ingresado es demasiado grande."
+            );
+        }
+    }
 }
 
 static string SolicitarTexto(string mensaje)
@@ -77,7 +165,9 @@ static string SolicitarTexto(string mensaje)
             return entrada.Trim();
         }
 
-        Console.WriteLine("Error: este campo no puede estar vacío.");
+        Console.WriteLine(
+            "Error: este campo no puede estar vacío."
+        );
     }
 }
 
@@ -116,4 +206,11 @@ static int SolicitarEdad(string mensaje)
             );
         }
     }
+}
+
+static void PausarPrograma()
+{
+    Console.WriteLine();
+    Console.WriteLine("Presione Enter para continuar...");
+    Console.ReadLine();
 }
