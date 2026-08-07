@@ -16,7 +16,8 @@ while (continuar)
     Console.WriteLine("2. Listar pacientes");
     Console.WriteLine("3. Buscar paciente por nombre");
     Console.WriteLine("4. Actualizar paciente");
-    Console.WriteLine("5. Salir");
+    Console.WriteLine("5. Eliminar paciente");
+    Console.WriteLine("6. Salir");
     Console.WriteLine();
 
     int opcion = SolicitarOpcion("Seleccione una opción: ");
@@ -40,6 +41,10 @@ while (continuar)
             break;
 
         case 5:
+            EliminarPaciente(pacientes);
+            break;
+
+        case 6:
             continuar = false;
             Console.WriteLine();
             Console.WriteLine("Gracias por utilizar VetCare RM.");
@@ -414,6 +419,89 @@ static Guid SolicitarGuid(string mensaje)
             "Error: debe ingresar un ID válido."
         );
     }
+}
+
+static void EliminarPaciente(List<Pet> pacientes)
+{
+    Console.Clear();
+
+    Console.WriteLine("======================================");
+    Console.WriteLine(" ELIMINAR PACIENTE");
+    Console.WriteLine("======================================");
+
+    if (pacientes.Count == 0)
+    {
+        Console.WriteLine();
+        Console.WriteLine("No hay pacientes registrados.");
+        PausarPrograma();
+        return;
+    }
+
+    Guid idBuscado = SolicitarGuid(
+        "Ingrese el ID del paciente: "
+    );
+
+    Pet? pacienteEncontrado = pacientes.FirstOrDefault(
+        paciente => paciente.Id == idBuscado
+    );
+
+
+    if (pacienteEncontrado is null)
+    {
+        Console.WriteLine();
+        Console.WriteLine(
+            "No existe un paciente con ese ID."
+        );
+
+        PausarPrograma();
+        return;
+    }
+
+
+    Console.WriteLine();
+    Console.WriteLine("Paciente encontrado:");
+    Console.WriteLine("--------------------------------------");
+    Console.WriteLine(
+        $"Nombre: {pacienteEncontrado.Nombre}"
+    );
+    Console.WriteLine(
+        $"Propietario: {pacienteEncontrado.Propietario.Nombre}"
+    );
+
+
+    Console.WriteLine();
+    Console.Write(
+        "¿Desea eliminar este paciente? (S/N): "
+    );
+
+    string? respuesta = Console.ReadLine();
+
+
+    if (
+        respuesta != null &&
+        respuesta.Equals(
+            "S",
+            StringComparison.OrdinalIgnoreCase
+        )
+    )
+    {
+        pacientes.Remove(pacienteEncontrado);
+
+        Console.WriteLine();
+        Console.WriteLine(
+            "Paciente eliminado correctamente."
+        );
+    }
+    else
+    {
+        Console.WriteLine();
+        Console.WriteLine(
+            "Operación cancelada."
+        );
+    }
+
+
+    PausarPrograma();
 }
 
 static void PausarPrograma()
