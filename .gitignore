@@ -1,0 +1,19 @@
+# .NET
+bin/
+obj/
+
+# Rider / IntelliJ
+.idea/
+*.sln.DotSettings.user
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
