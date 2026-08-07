@@ -1,5 +1,5 @@
 using VetCareRm.Consola.Models;
-
+List<Pet> pacientes = new List<Pet>();
 Console.WriteLine("======================================");
 Console.WriteLine(" Clínica Veterinaria VetCare RM");
 Console.WriteLine("======================================");
@@ -28,27 +28,42 @@ Pet paciente = new Pet
     Sintoma = SolicitarTexto("Síntoma: "),
     Propietario = propietario
 };
-
+pacientes.Add(paciente);
+Console.WriteLine();
+Console.WriteLine(
+    $"Pacientes registrados: {pacientes.Count}"
+);
 Console.WriteLine();
 Console.WriteLine("======================================");
 Console.WriteLine(" RESUMEN DEL REGISTRO");
 Console.WriteLine("======================================");
 
-Console.WriteLine();
-Console.WriteLine("PACIENTE");
-Console.WriteLine($"ID: {paciente.Id}");
-Console.WriteLine($"Nombre: {paciente.Nombre}");
-Console.WriteLine($"Edad: {paciente.Edad}");
-Console.WriteLine($"Especie: {paciente.Especie}");
-Console.WriteLine($"Raza: {paciente.Raza}");
-Console.WriteLine($"Síntoma: {paciente.Sintoma}");
+foreach (Pet pacienteRegistrado in pacientes)
+{
+    Console.WriteLine();
+    Console.WriteLine("PACIENTE");
+    Console.WriteLine($"ID: {pacienteRegistrado.Id}");
+    Console.WriteLine($"Nombre: {pacienteRegistrado.Nombre}");
+    Console.WriteLine($"Edad: {pacienteRegistrado.Edad}");
+    Console.WriteLine($"Especie: {pacienteRegistrado.Especie}");
+    Console.WriteLine($"Raza: {pacienteRegistrado.Raza}");
+    Console.WriteLine($"Síntoma: {pacienteRegistrado.Sintoma}");
 
-Console.WriteLine();
-Console.WriteLine("PROPIETARIO");
-Console.WriteLine($"ID: {paciente.Propietario.Id}");
-Console.WriteLine($"Nombre: {paciente.Propietario.Nombre}");
-Console.WriteLine($"Teléfono: {paciente.Propietario.Telefono}");
-Console.WriteLine($"Correo: {paciente.Propietario.Correo}");
+    Console.WriteLine();
+    Console.WriteLine("PROPIETARIO");
+    Console.WriteLine(
+        $"ID: {pacienteRegistrado.Propietario.Id}"
+    );
+    Console.WriteLine(
+        $"Nombre: {pacienteRegistrado.Propietario.Nombre}"
+    );
+    Console.WriteLine(
+        $"Teléfono: {pacienteRegistrado.Propietario.Telefono}"
+    );
+    Console.WriteLine(
+        $"Correo: {pacienteRegistrado.Propietario.Correo}"
+    );
+}
 
 static string SolicitarTexto(string mensaje)
 {
