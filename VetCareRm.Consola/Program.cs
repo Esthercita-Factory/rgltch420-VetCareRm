@@ -15,7 +15,8 @@ while (continuar)
     Console.WriteLine("1. Registrar paciente");
     Console.WriteLine("2. Listar pacientes");
     Console.WriteLine("3. Buscar paciente por nombre");
-    Console.WriteLine("4. Salir");
+    Console.WriteLine("4. Actualizar paciente");
+    Console.WriteLine("5. Salir");
     Console.WriteLine();
 
     int opcion = SolicitarOpcion("Seleccione una opción: ");
@@ -35,10 +36,14 @@ while (continuar)
           break;
 
         case 4:
-          continuar = false;
-          Console.WriteLine();
-          Console.WriteLine("Gracias por utilizar VetCare RM.");
-          break;
+            ActualizarPaciente(pacientes);
+            break;
+
+        case 5:
+            continuar = false;
+            Console.WriteLine();
+            Console.WriteLine("Gracias por utilizar VetCare RM.");
+            break;
         default:
             Console.WriteLine();
             Console.WriteLine("Error: la opción seleccionada no existe.");
@@ -275,6 +280,140 @@ static void BuscarPacientePorNombre(List<Pet> pacientes)
     );
 
     PausarPrograma();
+}
+
+static void ActualizarPaciente(List<Pet> pacientes)
+{
+    Console.Clear();
+
+    Console.WriteLine("======================================");
+    Console.WriteLine(" ACTUALIZACIÓN DE PACIENTE");
+    Console.WriteLine("======================================");
+
+    if (pacientes.Count == 0)
+    {
+        Console.WriteLine();
+        Console.WriteLine("No hay pacientes registrados.");
+        PausarPrograma();
+        return;
+    }
+
+    Console.WriteLine();
+    Console.WriteLine(
+        "Consulte primero el listado para conocer el ID del paciente."
+    );
+
+    Console.WriteLine();
+
+    Guid idBuscado = SolicitarGuid(
+        "Ingrese el ID del paciente: "
+    );
+
+    Pet? pacienteEncontrado = pacientes.FirstOrDefault(
+        paciente => paciente.Id == idBuscado
+    );
+
+    if (pacienteEncontrado is null)
+    {
+        Console.WriteLine();
+        Console.WriteLine(
+            "No se encontró un paciente con ese ID."
+        );
+
+        PausarPrograma();
+        return;
+    }
+
+    Console.WriteLine();
+    Console.WriteLine("DATOS ACTUALES DEL PACIENTE");
+    Console.WriteLine("--------------------------------------");
+    Console.WriteLine($"Nombre: {pacienteEncontrado.Nombre}");
+    Console.WriteLine($"Edad: {pacienteEncontrado.Edad}");
+    Console.WriteLine($"Especie: {pacienteEncontrado.Especie}");
+    Console.WriteLine($"Raza: {pacienteEncontrado.Raza}");
+    Console.WriteLine($"Síntoma: {pacienteEncontrado.Sintoma}");
+
+    Console.WriteLine();
+    Console.WriteLine("DATOS ACTUALES DEL PROPIETARIO");
+    Console.WriteLine("--------------------------------------");
+    Console.WriteLine(
+        $"Nombre: {pacienteEncontrado.Propietario.Nombre}"
+    );
+    Console.WriteLine(
+        $"Teléfono: {pacienteEncontrado.Propietario.Telefono}"
+    );
+    Console.WriteLine(
+        $"Correo: {pacienteEncontrado.Propietario.Correo}"
+    );
+
+    Console.WriteLine();
+    Console.WriteLine("INGRESE LOS NUEVOS DATOS DEL PACIENTE");
+    Console.WriteLine("--------------------------------------");
+
+    pacienteEncontrado.Nombre = SolicitarTexto(
+        "Nuevo nombre de la mascota: "
+    );
+
+    pacienteEncontrado.Edad = SolicitarEdad(
+        "Nueva edad de la mascota: "
+    );
+
+    pacienteEncontrado.Especie = SolicitarTexto(
+        "Nueva especie: "
+    );
+
+    pacienteEncontrado.Raza = SolicitarTexto(
+        "Nueva raza: "
+    );
+
+    pacienteEncontrado.Sintoma = SolicitarTexto(
+        "Nuevo síntoma: "
+    );
+
+    Console.WriteLine();
+    Console.WriteLine("INGRESE LOS NUEVOS DATOS DEL PROPIETARIO");
+    Console.WriteLine("--------------------------------------");
+
+    pacienteEncontrado.Propietario.Nombre = SolicitarTexto(
+        "Nuevo nombre del propietario: "
+    );
+
+    pacienteEncontrado.Propietario.Telefono = SolicitarTexto(
+        "Nuevo teléfono del propietario: "
+    );
+
+    pacienteEncontrado.Propietario.Correo = SolicitarTexto(
+        "Nuevo correo del propietario: "
+    );
+
+    Console.WriteLine();
+    Console.WriteLine("Paciente actualizado correctamente.");
+    Console.WriteLine($"ID conservado: {pacienteEncontrado.Id}");
+
+    PausarPrograma();
+}
+
+static Guid SolicitarGuid(string mensaje)
+{
+    while (true)
+    {
+        Console.Write(mensaje);
+        string? entrada = Console.ReadLine();
+
+        bool esValido = Guid.TryParse(
+            entrada,
+            out Guid id
+        );
+
+        if (esValido)
+        {
+            return id;
+        }
+
+        Console.WriteLine(
+            "Error: debe ingresar un ID válido."
+        );
+    }
 }
 
 static void PausarPrograma()
