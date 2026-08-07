@@ -1,8 +1,8 @@
-# Archivos generados por .NET
+# .NET
 bin/
 obj/
 
-# Rider e IntelliJ
+# Rider / IntelliJ
 .idea/
 *.sln.DotSettings.user
 
@@ -11,9 +11,9 @@ obj/
 *.user
 *.suo
 
-# Visual Studio Code
+# VS Code
 .vscode/
 
-# Archivos del sistema operativo
+# OS
 .DS_Store
 Thumbs.db

@@ -510,3 +510,4 @@ static void PausarPrograma()
     Console.WriteLine("Presione Enter para continuar...");
     Console.ReadLine();
 }
+
