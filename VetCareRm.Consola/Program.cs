@@ -1,4 +1,8 @@
 using VetCareRm.Consola.Models;
+using VetCareRm.Consola.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 List<Pet> pacientes = new List<Pet>();
 
@@ -18,6 +22,8 @@ while (continuar)
     Console.WriteLine("4. Actualizar paciente");
     Console.WriteLine("5. Eliminar paciente");
     Console.WriteLine("6. Salir");
+    Console.WriteLine("7. Demo herencia y polimorfismo");
+    Console.WriteLine("8. Demo de programación asíncrona");
     Console.WriteLine();
 
     int opcion = SolicitarOpcion("Seleccione una opción: ");
@@ -49,12 +55,116 @@ while (continuar)
             Console.WriteLine();
             Console.WriteLine("Gracias por utilizar VetCare RM.");
             break;
+
+        case 7:
+            DemoHerenciaPolimorfismo(pacientes);
+            break;
+        case 8:
+            await DemoAsyncMenu(pacientes);
+            break;
         default:
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Error: la opción seleccionada no existe.");
+            Console.ResetColor();
             PausarPrograma();
             break;
     }
+}
+
+// ---------------------------------------------------
+// Demonstración de herencia, polimorfismo, relaciones y servicios
+// ---------------------------------------------------
+static async Task DemoAsyncMenu(List<Pet> pacientes)
+{
+    var service = new AsyncDemoService();
+    bool volver = false;
+    while (!volver)
+    {
+        Console.Clear();
+        Console.WriteLine("=== DEMOSTRACIÓN PROGRAMACIÓN ASÍNCRONA ===");
+        Console.WriteLine("1. Registrar paciente de forma asíncrona");
+        Console.WriteLine("2. Ejecutar tareas con WhenAll");
+        Console.WriteLine("3. Ejecutar tareas con WhenAny");
+        Console.WriteLine("4. Simular atención de varios pacientes");
+        Console.WriteLine("0. Volver al menú principal");
+        Console.WriteLine();
+        int opt = SolicitarOpcion("Seleccione una opción: ");
+        switch (opt)
+        {
+            case 1:
+                await service.RegistrarPacienteAsync(pacientes);
+                break;
+            case 2:
+                await service.DemoWhenAllAsync();
+                break;
+            case 3:
+                await service.DemoWhenAnyAsync();
+                break;
+            case 4:
+                await service.SimularAtencionVariosPacientesAsync(pacientes);
+                break;
+            case 0:
+                volver = true;
+                continue;
+            default:
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Opción no válida.");
+                Console.ResetColor();
+                break;
+        }
+        PausarPrograma();
+    }
+}
+
+static void DemoHerenciaPolimorfismo(List<Pet> pacientes)
+{
+    Console.Clear();
+    Console.ForegroundColor = ConsoleColor.Cyan;
+    Console.WriteLine("=== DEMOSTRACIÓN DE HERENCIA Y POLIMORFISMO ===");
+    Console.ResetColor();
+
+    // crear propietario y mascota
+    var propietario = new Usuario
+    {
+        Id = Guid.NewGuid(),
+        Nombre = "Ana Gómez",
+        Telefono = "555-1234",
+        Correo = "ana@example.com"
+    };
+
+    var mascota = new Pet
+    {
+        Id = Guid.NewGuid(),
+        Nombre = "Firulais",
+        Edad = 3,
+        Especie = "Perro",
+        Raza = "Labrador",
+        Sintoma = "Saludable",
+        Propietario = propietario
+    };
+
+    // registrar
+    mascota.Registrar();
+    propietario.Registrar();
+
+    // añadir a la lista del propietario
+    propietario.Mascotas.Add(mascota);
+    pacientes.Add(mascota);
+
+    // Polimorfismo: sonido según especie
+    Console.WriteLine($"El sonido de {mascota.Nombre} ({mascota.Especie}) es: {mascota.EmitirSonido()}");
+
+    // Servicios veterinarios
+    ServicioVeterinario consulta = new ConsultaGeneral();
+    ServicioVeterinario vacunacion = new Vacunacion();
+    consulta.Atender(mascota);
+    vacunacion.Atender(mascota);
+
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine("Demostración completada exitosamente.");
+    Console.ResetColor();
+    PausarPrograma();
 }
 
 static void RegistrarPaciente(List<Pet> pacientes)
