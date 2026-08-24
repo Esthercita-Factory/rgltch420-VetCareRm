@@ -1,9 +1,12 @@
+using VetCareRm.Consola.Exceptions;
 using VetCareRm.Consola.Models;
 
 namespace VetCareRm.Consola.Services;
 
 public class PetService
 {
+    private readonly Logger _logger = new Logger();
+
     public void RegistrarPaciente(List<Pet> pacientes)
     {
         Console.Clear();
@@ -20,12 +23,10 @@ public class PetService
             Correo = SolicitarTexto("Correo del propietario: ")
         };
 
-
         Console.WriteLine();
         Console.WriteLine("======================================");
         Console.WriteLine(" REGISTRO DEL PACIENTE");
         Console.WriteLine("======================================");
-
 
         Pet paciente = new Pet
         {
@@ -38,9 +39,7 @@ public class PetService
             Propietario = propietario
         };
 
-
         pacientes.Add(paciente);
-
 
         Console.WriteLine();
         Console.WriteLine("Paciente registrado correctamente.");
@@ -50,7 +49,6 @@ public class PetService
         PausarPrograma();
     }
 
-
     public void ListarPacientes(List<Pet> pacientes)
     {
         Console.Clear();
@@ -59,7 +57,6 @@ public class PetService
         Console.WriteLine(" LISTADO DE PACIENTES");
         Console.WriteLine("======================================");
 
-
         if (pacientes.Count == 0)
         {
             Console.WriteLine();
@@ -67,7 +64,6 @@ public class PetService
             PausarPrograma();
             return;
         }
-
 
         foreach (Pet paciente in pacientes)
         {
@@ -88,10 +84,8 @@ public class PetService
             Console.WriteLine($"Correo: {paciente.Propietario.Correo}");
         }
 
-
         PausarPrograma();
     }
-
 
     public void BuscarPacientePorNombre(List<Pet> pacientes)
     {
@@ -101,37 +95,52 @@ public class PetService
             "Ingrese nombre del paciente: "
         );
 
-
-        Pet? paciente = pacientes.FirstOrDefault(
-            p => p.Nombre.Equals(
-                nombreBuscado,
-                StringComparison.OrdinalIgnoreCase
-            )
-        );
-
-
-        if (paciente is null)
+        try
         {
-            Console.WriteLine("Paciente no encontrado.");
-            PausarPrograma();
-            return;
+            Pet? paciente = pacientes.FirstOrDefault(
+                p => p.Nombre.Equals(
+                    nombreBuscado,
+                    StringComparison.OrdinalIgnoreCase
+                )
+            );
+
+            if (paciente is null)
+            {
+                throw new MascotaNoEncontradaException(
+                    $"No se encontró una mascota con el nombre '{nombreBuscado}'."
+                );
+            }
+
+            Console.WriteLine();
+            Console.WriteLine($"Paciente encontrado: {paciente.Nombre}");
+            Console.WriteLine($"Especie: {paciente.Especie}");
+            Console.WriteLine($"Raza: {paciente.Raza}");
         }
+        catch (MascotaNoEncontradaException ex)
+        {
+            _logger.LogError(
+                "Se intentó buscar una mascota que no existe.",
+                ex
+            );
 
-
-        Console.WriteLine($"Paciente encontrado: {paciente.Nombre}");
-
-        PausarPrograma();
+            Console.WriteLine();
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        finally
+        {
+            Console.WriteLine();
+            Console.WriteLine("Búsqueda finalizada.");
+            PausarPrograma();
+        }
     }
-
 
     public void ActualizarPaciente(List<Pet> pacientes)
     {
         Console.WriteLine("Actualizar paciente");
-        
+
         // mantenemos aquí tu lógica actual
         // se mueve completa igual
     }
-
 
     public void EliminarPaciente(List<Pet> pacientes)
     {
@@ -140,7 +149,6 @@ public class PetService
         // mantenemos aquí tu lógica actual
         // se mueve completa igual
     }
-
 
     private static string SolicitarTexto(string mensaje)
     {
@@ -161,7 +169,6 @@ public class PetService
         }
     }
 
-
     private static int SolicitarEdad(string mensaje)
     {
         while (true)
@@ -179,7 +186,6 @@ public class PetService
             );
         }
     }
-
 
     private static void PausarPrograma()
     {

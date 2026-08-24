@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 List<Pet> pacientes = new List<Pet>();
+PetService petService = new PetService();
 
 bool continuar = true;
 
@@ -39,8 +40,8 @@ while (continuar)
             break;
 
         case 3:
-          BuscarPacientePorNombre(pacientes);
-          break;
+            petService.BuscarPacientePorNombre(pacientes);
+            break;
 
         case 4:
             ActualizarPaciente(pacientes);
@@ -330,71 +331,6 @@ static int SolicitarEdad(string mensaje)
             );
         }
     }
-}
-
-static void BuscarPacientePorNombre(List<Pet> pacientes)
-{
-    Console.Clear();
-
-    Console.WriteLine("======================================");
-    Console.WriteLine(" BÚSQUEDA DE PACIENTE");
-    Console.WriteLine("======================================");
-
-    if (pacientes.Count == 0)
-    {
-        Console.WriteLine();
-        Console.WriteLine("No hay pacientes registrados.");
-        PausarPrograma();
-        return;
-    }
-
-    Console.WriteLine();
-
-    string nombreBuscado = SolicitarTexto(
-        "Ingrese el nombre de la mascota: "
-    );
-
-    Pet? pacienteEncontrado = pacientes.FirstOrDefault(
-        paciente => paciente.Nombre.Equals(
-            nombreBuscado,
-            StringComparison.OrdinalIgnoreCase
-        )
-    );
-
-    if (pacienteEncontrado is null)
-    {
-        Console.WriteLine();
-        Console.WriteLine(
-            $"No se encontró un paciente llamado {nombreBuscado}."
-        );
-
-        PausarPrograma();
-        return;
-    }
-
-    Console.WriteLine();
-    Console.WriteLine("Paciente encontrado correctamente.");
-    Console.WriteLine("--------------------------------------");
-    Console.WriteLine($"ID: {pacienteEncontrado.Id}");
-    Console.WriteLine($"Nombre: {pacienteEncontrado.Nombre}");
-    Console.WriteLine($"Edad: {pacienteEncontrado.Edad}");
-    Console.WriteLine($"Especie: {pacienteEncontrado.Especie}");
-    Console.WriteLine($"Raza: {pacienteEncontrado.Raza}");
-    Console.WriteLine($"Síntoma: {pacienteEncontrado.Sintoma}");
-
-    Console.WriteLine();
-    Console.WriteLine("PROPIETARIO");
-    Console.WriteLine(
-        $"Nombre: {pacienteEncontrado.Propietario.Nombre}"
-    );
-    Console.WriteLine(
-        $"Teléfono: {pacienteEncontrado.Propietario.Telefono}"
-    );
-    Console.WriteLine(
-        $"Correo: {pacienteEncontrado.Propietario.Correo}"
-    );
-
-    PausarPrograma();
 }
 
 static void ActualizarPaciente(List<Pet> pacientes)
