@@ -1,12 +1,9 @@
-using VetCareRm.Consola.Exceptions;
 using VetCareRm.Consola.Models;
 
 namespace VetCareRm.Consola.Services;
 
 public class PetService
 {
-    private readonly Logger _logger = new Logger();
-
     public void RegistrarPaciente(List<Pet> pacientes)
     {
         Console.Clear();
@@ -67,21 +64,7 @@ public class PetService
 
         foreach (Pet paciente in pacientes)
         {
-            Console.WriteLine();
-            Console.WriteLine("--------------------------------------");
-            Console.WriteLine("PACIENTE");
-            Console.WriteLine($"ID: {paciente.Id}");
-            Console.WriteLine($"Nombre: {paciente.Nombre}");
-            Console.WriteLine($"Edad: {paciente.Edad}");
-            Console.WriteLine($"Especie: {paciente.Especie}");
-            Console.WriteLine($"Raza: {paciente.Raza}");
-            Console.WriteLine($"Síntoma: {paciente.Sintoma}");
-
-            Console.WriteLine();
-            Console.WriteLine("PROPIETARIO");
-            Console.WriteLine($"Nombre: {paciente.Propietario.Nombre}");
-            Console.WriteLine($"Teléfono: {paciente.Propietario.Telefono}");
-            Console.WriteLine($"Correo: {paciente.Propietario.Correo}");
+            MostrarPaciente(paciente);
         }
 
         PausarPrograma();
@@ -91,63 +74,233 @@ public class PetService
     {
         Console.Clear();
 
+        Console.WriteLine("======================================");
+        Console.WriteLine(" BÚSQUEDA DE PACIENTE");
+        Console.WriteLine("======================================");
+
+        if (pacientes.Count == 0)
+        {
+            Console.WriteLine();
+            Console.WriteLine("No hay pacientes registrados.");
+            PausarPrograma();
+            return;
+        }
+
         string nombreBuscado = SolicitarTexto(
             "Ingrese nombre del paciente: "
         );
 
-        try
-        {
-            Pet? paciente = pacientes.FirstOrDefault(
-                p => p.Nombre.Equals(
-                    nombreBuscado,
-                    StringComparison.OrdinalIgnoreCase
-                )
-            );
+        Pet? paciente = pacientes.FirstOrDefault(
+            p => p.Nombre.Equals(
+                nombreBuscado,
+                StringComparison.OrdinalIgnoreCase
+            )
+        );
 
-            if (paciente is null)
-            {
-                throw new MascotaNoEncontradaException(
-                    $"No se encontró una mascota con el nombre '{nombreBuscado}'."
-                );
-            }
-
-            Console.WriteLine();
-            Console.WriteLine($"Paciente encontrado: {paciente.Nombre}");
-            Console.WriteLine($"Especie: {paciente.Especie}");
-            Console.WriteLine($"Raza: {paciente.Raza}");
-        }
-        catch (MascotaNoEncontradaException ex)
-        {
-            _logger.LogError(
-                "Se intentó buscar una mascota que no existe.",
-                ex
-            );
-
-            Console.WriteLine();
-            Console.WriteLine($"Error: {ex.Message}");
-        }
-        finally
+        if (paciente is null)
         {
             Console.WriteLine();
-            Console.WriteLine("Búsqueda finalizada.");
+            Console.WriteLine("Paciente no encontrado.");
             PausarPrograma();
+            return;
         }
+
+        Console.WriteLine();
+        Console.WriteLine("Paciente encontrado:");
+        MostrarPaciente(paciente);
+
+        PausarPrograma();
     }
 
     public void ActualizarPaciente(List<Pet> pacientes)
     {
-        Console.WriteLine("Actualizar paciente");
+        Console.Clear();
 
-        // mantenemos aquí tu lógica actual
-        // se mueve completa igual
+        Console.WriteLine("======================================");
+        Console.WriteLine(" ACTUALIZAR PACIENTE");
+        Console.WriteLine("======================================");
+
+        if (pacientes.Count == 0)
+        {
+            Console.WriteLine();
+            Console.WriteLine("No hay pacientes registrados.");
+            PausarPrograma();
+            return;
+        }
+
+        MostrarIds(pacientes);
+
+        Console.WriteLine();
+        Console.WriteLine("Escriba 0 para volver.");
+
+        string entrada = SolicitarTexto("ID del paciente: ");
+
+        if (entrada == "0")
+        {
+            return;
+        }
+
+        if (!Guid.TryParse(entrada, out Guid id))
+        {
+            Console.WriteLine();
+            Console.WriteLine("Error: el ID no tiene un formato válido.");
+            PausarPrograma();
+            return;
+        }
+
+        Pet? paciente = pacientes.FirstOrDefault(
+            p => p.Id == id
+        );
+
+        if (paciente is null)
+        {
+            Console.WriteLine();
+            Console.WriteLine("No se encontró un paciente con ese ID.");
+            PausarPrograma();
+            return;
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Paciente seleccionado:");
+        MostrarPaciente(paciente);
+
+        Console.WriteLine();
+        Console.WriteLine("Ingrese los nuevos datos.");
+
+        paciente.Nombre = SolicitarTexto(
+            $"Nombre [{paciente.Nombre}]: "
+        );
+
+        paciente.Edad = SolicitarEdad(
+            $"Edad [{paciente.Edad}]: "
+        );
+
+        paciente.Especie = SolicitarTexto(
+            $"Especie [{paciente.Especie}]: "
+        );
+
+        paciente.Raza = SolicitarTexto(
+            $"Raza [{paciente.Raza}]: "
+        );
+
+        paciente.Sintoma = SolicitarTexto(
+            $"Síntoma [{paciente.Sintoma}]: "
+        );
+
+        Console.WriteLine();
+        Console.WriteLine("Paciente actualizado correctamente.");
+
+        PausarPrograma();
     }
 
     public void EliminarPaciente(List<Pet> pacientes)
     {
-        Console.WriteLine("Eliminar paciente");
+        Console.Clear();
 
-        // mantenemos aquí tu lógica actual
-        // se mueve completa igual
+        Console.WriteLine("======================================");
+        Console.WriteLine(" ELIMINAR PACIENTE");
+        Console.WriteLine("======================================");
+
+        if (pacientes.Count == 0)
+        {
+            Console.WriteLine();
+            Console.WriteLine("No hay pacientes registrados.");
+            PausarPrograma();
+            return;
+        }
+
+        MostrarIds(pacientes);
+
+        Console.WriteLine();
+        Console.WriteLine("Escriba 0 para volver.");
+
+        string entrada = SolicitarTexto("ID del paciente: ");
+
+        if (entrada == "0")
+        {
+            return;
+        }
+
+        if (!Guid.TryParse(entrada, out Guid id))
+        {
+            Console.WriteLine();
+            Console.WriteLine("Error: el ID no tiene un formato válido.");
+            PausarPrograma();
+            return;
+        }
+
+        Pet? paciente = pacientes.FirstOrDefault(
+            p => p.Id == id
+        );
+
+        if (paciente is null)
+        {
+            Console.WriteLine();
+            Console.WriteLine("No se encontró un paciente con ese ID.");
+            PausarPrograma();
+            return;
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Paciente seleccionado:");
+        MostrarPaciente(paciente);
+
+        Console.WriteLine();
+        Console.Write("¿Desea eliminar este paciente? (S/N): ");
+
+        string? confirmacion = Console.ReadLine();
+
+        if (!string.Equals(
+                confirmacion?.Trim(),
+                "S",
+                StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine();
+            Console.WriteLine("Operación cancelada.");
+            PausarPrograma();
+            return;
+        }
+
+        pacientes.Remove(paciente);
+
+        Console.WriteLine();
+        Console.WriteLine("Paciente eliminado correctamente.");
+        Console.WriteLine($"Total de pacientes: {pacientes.Count}");
+
+        PausarPrograma();
+    }
+
+    private static void MostrarIds(List<Pet> pacientes)
+    {
+        Console.WriteLine();
+        Console.WriteLine("Pacientes disponibles:");
+
+        foreach (Pet paciente in pacientes)
+        {
+            Console.WriteLine(
+                $"{paciente.Id} - {paciente.Nombre}"
+            );
+        }
+    }
+
+    private static void MostrarPaciente(Pet paciente)
+    {
+        Console.WriteLine();
+        Console.WriteLine("--------------------------------------");
+        Console.WriteLine("PACIENTE");
+        Console.WriteLine($"ID: {paciente.Id}");
+        Console.WriteLine($"Nombre: {paciente.Nombre}");
+        Console.WriteLine($"Edad: {paciente.Edad}");
+        Console.WriteLine($"Especie: {paciente.Especie}");
+        Console.WriteLine($"Raza: {paciente.Raza}");
+        Console.WriteLine($"Síntoma: {paciente.Sintoma}");
+
+        Console.WriteLine();
+        Console.WriteLine("PROPIETARIO");
+        Console.WriteLine($"Nombre: {paciente.Propietario.Nombre}");
+        Console.WriteLine($"Teléfono: {paciente.Propietario.Telefono}");
+        Console.WriteLine($"Correo: {paciente.Propietario.Correo}");
+        Console.WriteLine("--------------------------------------");
     }
 
     private static string SolicitarTexto(string mensaje)
