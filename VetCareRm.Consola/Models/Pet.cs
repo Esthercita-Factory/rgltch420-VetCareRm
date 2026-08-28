@@ -55,7 +55,7 @@ public class Pet : Animal, IRegistrable, INotificable
 /// <summary>
 /// Clase base abstracta para los servicios veterinarios.
 /// </summary>
-public abstract class ServicioVeterinario
+public abstract class ServicioVeterinario : IAtendible
 {
     public abstract void Atender(Pet mascota);
 }
@@ -64,16 +64,8 @@ public abstract class ServicioVeterinario
 /// Servicio de consulta general.
 /// Implementa IAtendible para demostrar el uso de interfaces.
 /// </summary>
-public class ConsultaGeneral : ServicioVeterinario, IAtendible
+public class ConsultaGeneral : ServicioVeterinario
 {
-    /// <summary>
-    /// Método definido por IAtendible.
-    /// </summary>
-    public void Atender()
-    {
-        Console.WriteLine("Realizando consulta general.");
-    }
-
     /// <summary>
     /// Atiende una mascota específica.
     /// Se mantiene para conservar el comportamiento de S3.
@@ -90,16 +82,8 @@ public class ConsultaGeneral : ServicioVeterinario, IAtendible
 /// Servicio de vacunación.
 /// Implementa IAtendible para demostrar el uso de interfaces.
 /// </summary>
-public class Vacunacion : ServicioVeterinario, IAtendible
+public class Vacunacion : ServicioVeterinario
 {
-    /// <summary>
-    /// Método definido por IAtendible.
-    /// </summary>
-    public void Atender()
-    {
-        Console.WriteLine("Aplicando servicio de vacunación.");
-    }
-
     /// <summary>
     /// Atiende una mascota específica.
     /// Se mantiene para conservar el comportamiento de S3.
