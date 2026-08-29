@@ -1,4 +1,4 @@
-# 🐾 VetCare RM
+# VetCare RM
 
 Sistema de gestión para una clínica veterinaria desarrollado en **C# 14 / .NET 10**.
 
@@ -8,7 +8,7 @@ VetCare RM es una aplicación de consola para gestionar pacientes y propietarios
 
 ---
 
-## 📋 Índice
+## Índice
 
 - [Descripción](#-descripción)
 - [Objetivo](#-objetivo)
@@ -33,7 +33,7 @@ VetCare RM es una aplicación de consola para gestionar pacientes y propietarios
 
 ---
 
-## 📖 Descripción
+## Descripción
 
 VetCare RM es una aplicación de consola orientada a la gestión básica de una clínica veterinaria.
 
@@ -60,7 +60,7 @@ La información de los pacientes se mantiene actualmente en una colección en me
 
 ---
 
-## 🎯 Objetivo
+## Objetivo
 
 El objetivo del proyecto es construir progresivamente un sistema veterinario aplicando buenas prácticas de desarrollo en C#.
 
@@ -81,7 +81,7 @@ Los principales objetivos técnicos son:
 
 ---
 
-# 🛠️ Tecnologías
+# Tecnologías
 
 | Tecnología | Uso |
 |---|---|
@@ -97,7 +97,7 @@ Los principales objetivos técnicos son:
 
 ---
 
-# ⚙️ Funcionalidades
+# Funcionalidades
 
 Actualmente el sistema cuenta con:
 
@@ -163,7 +163,7 @@ Se utilizan pruebas automatizadas con xUnit para comprobar:
 
 ---
 
-# 🖥️ Menú principal
+# Menú principal
 
 El menú está organizado por funcionalidades del sistema:
 
@@ -194,7 +194,7 @@ Las operaciones internas cuentan con opciones para regresar al menú cuando corr
 
 ---
 
-# 🐶 CRUD de pacientes
+# CRUD de pacientes
 
 ## 1. Registrar paciente
 
@@ -298,7 +298,7 @@ Esto evita eliminaciones accidentales.
 
 ---
 
-# 🧱 Programación orientada a objetos
+# Programación orientada a objetos
 
 ## Animal
 
@@ -401,7 +401,7 @@ Cada servicio proporciona su propia implementación de `Atender`.
 
 ---
 
-# 🔌 Interfaces
+# Interfaces
 
 El proyecto utiliza interfaces para definir comportamientos.
 
@@ -440,7 +440,7 @@ Implementada por `Pet`.
 
 ---
 
-# 🔎 LINQ
+# LINQ
 
 Las consultas están encapsuladas en:
 
@@ -497,7 +497,7 @@ De esta forma, la lógica de consultas permanece separada del menú principal.
 
 ---
 
-# ⚡ Programación asíncrona
+# Programación asíncrona
 
 La programación asíncrona está implementada en:
 
@@ -618,7 +618,7 @@ Task.WhenAny
 
 ---
 
-# 🧯 Manejo de errores y logging
+# Manejo de errores y logging
 
 ## Validaciones
 
@@ -680,7 +680,7 @@ El directorio `logs` se crea automáticamente cuando se registra un error.
 
 ---
 
-# 🧪 Pruebas automatizadas
+# Pruebas automatizadas
 
 Las pruebas están ubicadas en:
 
@@ -716,7 +716,7 @@ Las 9 pruebas actuales fueron exitosas.
 
 ---
 
-# 📁 Estructura del proyecto
+# Estructura del proyecto
 
 ```text
 VetCareRm/
@@ -762,7 +762,7 @@ VetCareRm/
 
 ---
 
-# 📐 Diagrama UML
+# Diagrama UML
 
 El diagrama representa las relaciones principales existentes en el código:
 
@@ -885,7 +885,7 @@ classDiagram
 
 ---
 
-# 🔄 Flujo de la aplicación
+# Flujo de la aplicación
 
 ```text
                     ┌───────────────────────┐
@@ -917,7 +917,7 @@ classDiagram
 
 ---
 
-# ✍️ Convenciones de código
+# Convenciones de código
 
 ## PascalCase
 
@@ -979,7 +979,7 @@ El código mantiene:
 
 ---
 
-# ▶️ Requisitos
+# Requisitos
 
 Para ejecutar el proyecto se necesita:
 
@@ -994,7 +994,7 @@ dotnet --version
 
 ---
 
-# 🚀 Instalación y ejecución
+# Instalación y ejecución
 
 ## Clonar
 
@@ -1023,7 +1023,7 @@ dotnet test
 
 ---
 
-# 🧰 Comandos útiles
+# Comandos útiles
 
 ### Revisar errores y warnings de C#
 
@@ -1055,33 +1055,7 @@ git log --oneline --decorate -15
 git branch --show-current
 ```
 
----
-
-# 📊 Estado del proyecto
-
-| Funcionalidad | Estado |
-|---|---|
-| Registro de pacientes | ✅ |
-| Listado de pacientes | ✅ |
-| Búsqueda | ✅ |
-| Actualización | ✅ |
-| Eliminación | ✅ |
-| Consultas LINQ | ✅ |
-| Herencia | ✅ |
-| Polimorfismo | ✅ |
-| Interfaces | ✅ |
-| Excepción personalizada | ✅ |
-| Logger | ✅ |
-| `async` / `await` | ✅ |
-| `Task.Run` | ✅ |
-| `Task.WhenAll` | ✅ |
-| `Task.WhenAny` | ✅ |
-| Pruebas xUnit | ✅ |
-| UML | ✅ |
-
----
-
-# 👨‍💻 Proyecto
+# Proyecto
 
 **VetCare RM**
 
